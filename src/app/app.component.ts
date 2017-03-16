@@ -1,5 +1,5 @@
-import { warn } from '@angular/compiler/testing/facade/lang';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 declare var Chart: any;
 
@@ -9,11 +9,17 @@ declare var Chart: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  chartForm: FormGroup;
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   data: any;
   options: any;
   reportGraph: any;
+  chartStructureType: string = 'single';
+
+  constructor(private _formBuilder: FormBuilder) {
+
+  }
 
   ngOnInit(): void {
     let othis = this;
@@ -33,14 +39,30 @@ export class AppComponent implements OnInit {
           backgroundColor: "rgba(200,0,10,0.4)",
           data: [15, 9, 8, 101, 36, 95, 30],
         }
-      ]
+      ],
+
+      options: {
+        scales: {
+          xAxes: [{
+            stacked: true
+          }],
+          yAxes: [{
+            stacked: true
+          }]
+        }
+      }
     };
 
+
+
+    this.chartForm = this._formBuilder.group({
+      single: ['']
+    });
     othis.initGraph();
   }
 
   initGraph() {
-
+    console.log(this.data);
     this.reportGraph = new Chart(this.context, {
       type: 'bar',
       data: this.data
@@ -66,10 +88,13 @@ export class AppComponent implements OnInit {
     this.reportGraph.config.data.datasets[0].data = this.data.datasets[0].data;
     this.reportGraph.config.data.datasets[1].data = this.data.datasets[1].data;
 
-    console.log(this.reportGraph.config.data.datasets[0].data);
-    console.log(this.reportGraph.config.data.datasets[1].data);
+    //console.log(this.reportGraph.config.data.datasets[0].data);
+    //console.log(this.reportGraph.config.data.datasets[1].data);
 
+    this.reportGraph.config.type = this.chartStructureType;
+    //console.log(this.reportGraph.config.type);
     this.reportGraph.update();
+
   }
 
 }

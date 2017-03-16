@@ -1,4 +1,13 @@
-<div style="width: 60%; height: 500px; margin: auto" id="canvas-container" (mouseenter)="updateGraph()">
+<div [formGroup]="chartForm">
+  <div style="display: inline-flex; margin-right: 20px;">
+    <input type="radio" formControlName="single" [(ngModel)]="chartStructureType"  (ngModelChange)="updateGraph()" value="single"/> Single
+  </div>
+  <div style="display: inline-flex; margin-right: 20px;">
+    <input type="radio" formControlName="single" [(ngModel)]="chartStructureType"  (ngModelChange)="updateGraph()" value="stacked"/> Stacked
+  </div>
+</div>
+
+<div style="width: 60%; height: 300px; margin: auto" id="canvas-container">
   <canvas id="canvas-board" 
       style="width: 100%; height: 100%">
   </canvas>
